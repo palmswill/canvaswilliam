@@ -1,0 +1,95 @@
+html, body {
+    height: 90%;
+}
+body{
+    margin:0 auto;
+}
+#root{
+    position:relative;
+    height:100%;
+    width:100%;
+    top: 0%;
+    bottom:0%;
+}
+.dider{
+    background-color: rgba(10,10,10,0);
+    border-style:double;
+    border-color:rgba(10, 10, 10, 0.1)
+ 
+
+}
+
+#top{
+    position: fixed;
+    display:grid;
+    top:3%;
+    width: 96%;
+    left:2%;
+    height:14%;
+    grid-template-columns:40% 32% 8% 20%;
+}
+
+#midop{
+    position:fixed;
+    display:grid;
+    left:2%;
+    width:96%;
+    top:17%;
+    height:90%;
+}
+#canvas{
+    position:absolute;
+    top:4px;
+    left:4px;
+    width:70%;
+    height:585px;
+    background-color:rgb(240, 234, 234,0.1);
+}
+
+
+nav ul a{
+    border-style:single;
+    font-size:7px;
+    font-family:sans-serif;
+}
+
+/*toolbox*/
+#toolbox{
+    position:absolute;
+    top:4px;
+    right:4px;
+    width:28.5%;
+    height:585px;
+
+    
+}
+div.tool{
+    position: relative;
+    border-style:double;
+    font-size:10px;
+    text-align: justify;
+    height:25px;
+    top:2px;
+    width:80%;
+    line-height:20px;
+    background-color: rgb(231, 231, 224,0);
+    left:10%;
+
+
+}
+button.toolbut{
+    position:absolute;
+    font-size:5px;
+    right:2px;
+    top:5px;
+    width:0px;
+    align-content: center;
+        
+}
+
+
+/*main canvas*/
+
+
+
+
