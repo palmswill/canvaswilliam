@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import './mainshow.css'
 import Toolbar from './toolbar.js'
 import Screenshow from './screenshow.js'
 
 
 const Mainshow=()=>{
-    const [toolbardata, settoolbardata] = useState("");
-    useEffect(()=>{
-    }
-    )
     return(
     <div >
     <div className="dider" id="top">
@@ -19,9 +15,10 @@ const Mainshow=()=>{
     </div>
     <div className="dider" id="midop">
         <div className="dider" id="canvas">
+        <Screenshow/>
         </div>
         <div className="dider" id="toolbox">  
-        <Toolbar passToolData={settoolbardata}/>
+        <Toolbar />
         </div>
     </div>
     </div>

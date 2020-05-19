@@ -1,102 +1,46 @@
-import React,{ useState, useEffect } from 'react'
-import {connect} from 'react-redux'
+import React from 'react'
+import { useDispatch} from 'react-redux'
+import {deleteTool,hideShowTool} from '../reducers/rootReducers'
+import getlist from './gettooolload'
 
 
 
-const Toolbar=(props)=>{
-    var toollist="";
-    const [toolstate, toolchange]=useState({
-        tools:props.tools
+
+
+export default()=>{      
+    let toollist=[];
+
+    const dispatch=useDispatch();
+    const toolstate=({
+        tools:getlist()
     })
+
+    console.log(toolstate.tools)
     const handlechange=(e)=>{
-        let toolorder=0;        
-        toolstate.tools.map(tool=>{
-            if (tool.id.toString() === e.target.id){    
-                let toolmirror=tool;                
-                toolmirror.active=e.target.checked;
-                let toolstatemirror=toolstate.tools;
-                toolstatemirror[toolorder]=toolmirror;
-                toolchange({tools:toolstatemirror})
-                
-            }   
-        toolorder++
-        return ""}
-            )
+        dispatch(hideShowTool(e.target.id[0],Number(e.target.id[2])))      
     }
 
     const handleclick=(e)=>{
-        ///let toolorder=0;        
-        toolstate.tools.map(tool=>{
-            if (tool.id.toString() === e.target.id){
-                props.deleteTool(tool.ptoolid)  
-                /*                
-                let toolstatemirror=toolstate.tools;
-                toolstatemirror.splice(toolorder,1)
-                toolchange({tools:toolstatemirror})
-                */
-            }   
-            ///toolorder++
-        return ""}
-            )
+        console.log(e.target.id[0],e.target.id[2]);
+        dispatch(deleteTool(e.target.id[0],Number(e.target.id[2])));
     }
-
-
-    useEffect(()=>{
-    props.passToolData(toolstate)
-    
-    })
-
-
    if (toolstate.tools.length){
     toollist=toolstate.tools.map(tool=>{
         return(
-            <div className="tool" key={tool.id}>    
+            <div className="tool" key={tool.toolid}>    
                 <label>
-                    <input type="checkbox" id={tool.id} defaultChecked onChange={handlechange}/>
+                    <input type="checkbox" id={[tool.ttype,tool.toolid]}  checked={tool.active} onChange={handlechange}/>
                     <span  style={{fontSize:"10px"}}>{tool.name}</span>
-                    <button className="toolbut circle" type="button" id={tool.id} onClick={handleclick}>X</button>
+                    <button className="toolbut circle" type="button" id={[tool.ttype,tool.toolid]} onClick={handleclick}>X</button>
                 </label>          
             </div>
         )
     })
     }
-
 return (
-
     <div>
         {toollist}
     </div>
-
-
 )        
 }
-    
-const mapStateToProps=(state)=>{
-    console.log(state.users)
-    const activeuser=state.users.filter(user=>{return user.id===1})
-    const activescenetool=activeuser[0].scenetoollist[0];    
-    const ptooldata=activeuser[0].ptooldata;
-    let tools=[];
-    for (let item in activescenetool){
-        for (let ptool in ptooldata){
-            if(activescenetool[item].toolid === ptooldata[ptool].ptoolid){
-            ptooldata[ptool]["active"]=activescenetool[item]["active"]
-            ptooldata[ptool]["id"]=(tools.length+1)
-            tools.push(ptooldata[ptool]);
-            } 
-        }
-    }
-    return{
-        tools:tools
-    }
 
-
-}
-
-const mapDispatchToProps = (dispatch) =>{
-    return{
-        deleteTool: (id) =>{dispatch({type:'DELETE_TOOL',id:id})}
-    }
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(Toolbar);

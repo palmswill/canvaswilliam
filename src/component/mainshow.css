@@ -89,6 +89,17 @@ button.toolbut{
 
 
 /*main canvas*/
+div.toolshow{
+    position: relative;
+    height:50px;
+    width:50px;
+}
+
+img.toolshow{
+    height:50px;
+    width:50px;
+
+}
 
 
 
