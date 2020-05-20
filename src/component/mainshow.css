@@ -26,7 +26,7 @@ body{
     width: 96%;
     left:2%;
     height:14%;
-    grid-template-columns:40% 32% 8% 20%;
+    grid-template-columns:72% 8% 20%;
 }
 
 #midop{
@@ -75,7 +75,6 @@ div.tool{
     background-color: rgb(231, 231, 224,0);
     left:10%;
 
-
 }
 button.toolbut{
     position:absolute;
@@ -86,6 +85,46 @@ button.toolbut{
     align-content: center;
         
 }
+
+button.upbut{
+    position:absolute;
+    font-size:5px;
+    height:40%;
+    right:20%;
+    top:10%;
+    width:0px;
+    align-content: center;
+
+}
+
+button.downbut{
+    position:absolute;
+    font-size:5px;
+    height:40%;
+    right:20%;
+    bottom:10%;
+    width:0px;
+    align-content: center;
+}
+
+
+
+  .up {
+    font-size:10px;
+    position: absolute;
+    top: -35%;
+    left: 23%;
+  }
+  
+  .down {
+    font-size:10px;
+    position: absolute;
+    top: -80%;
+    left: 25%;
+    transform-origin: 50% 50%;
+    transform: rotate(180deg);
+  }
+
 
 
 /*main canvas*/
@@ -100,6 +139,26 @@ img.toolshow{
     width:50px;
 
 }
+
+
+
+.scenelist img {
+    width: auto; 
+    height: 40px;
+    border-style:double;
+    border-width: 2px;
+    
+}
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+.column {
+    float: left;
+    width: 70px;
+    padding: 5px;
+  }
 
 
 
