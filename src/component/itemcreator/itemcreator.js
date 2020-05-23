@@ -1,17 +1,18 @@
 import styled from "styled-components";
 
-const Rectangle = styled.div.attrs(({ x, y, width,length }) => ({
+const Rectangle = styled.div.attrs((props) => ({
   style: {
-    transform: `translate(${x - width}px, ${y - length}px)`
+    width:`${props.width}px`,
+    height:`${props.height}px`,
+    "zIndex":`${props.zdex}`,
+    transform: `translate(${props.x}px, ${props.y}px)`,
   }
 }))`
   cursor: grab;
   position: absolute;
-  width: 25px;
-  height: 25px;
-  background-color: red;
+  resize:both;
   
-
+  
   ${({ dragging }) =>
     dragging &&
     `

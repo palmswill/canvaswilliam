@@ -21,7 +21,7 @@ const iniState= {
                         {toolid:1,active:true,ttype:"p",css:{},opacity:0.5,zdex:3},
                        {toolid:4,active:true,ttype:"p",css:{},opacity:0.7,zdex:4},
                        {toolid:3,active:false,ttype:"p",css:{},opacity:0.3,zdex:2},
-                       {toolid:2,active:true,ttype:"p",css:{},opacity:1,zdex:1}
+                       {toolid:5,active:true,ttype:"p",css:{},opacity:1,zdex:1}
         ]},
         {id:"2",
                         tools:[
@@ -36,7 +36,7 @@ const iniState= {
                         {toolid:1,active:true,ttype:"p",css:{},opacity:1,zdex:3},
                        {toolid:4,active:true,ttype:"p",css:{},opacity:1,zdex:4},
                        {toolid:3,active:false,ttype:"p",css:{},opacity:1,zdex:2},
-                       {toolid:5,active:true,ttype:"p",css:{},opacity:1,zdex:1}
+                       {toolid:2,active:true,ttype:"p",css:{},opacity:1,zdex:1}
         ]}
 
     
@@ -47,7 +47,7 @@ const iniState= {
                    {toolid:2,type:"img",url:"/frame1.jpg",name:"top-bar"},
                    {toolid:3,type:"img",url:"/frame3.jpg",name:"bottom-bar"},
                    {toolid:4,type:"img", url:"/frame4.jpg",name:"mark"},
-                   {toolid:5,type:"img", url:"/waitscreen3.png",name:"waitscreen"}
+                   {toolid:5,type:"img", url:"/livestream.jpg",name:"waitscreen"}
                   ],
         friends:[]
         },

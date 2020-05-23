@@ -4,6 +4,7 @@ import {useSelector} from 'react-redux'
 
 ////prepare loading list for screenshow and toolbar.js
 export default ()=>{
+    console.log("sceneloaded");
     var activeuserid=useSelector((state)=>state.users.findIndex(user=>user.id===state.activeaccount))
     var activesceneid=useSelector((state)=>state.users[activeuserid].scenetoollist.findIndex(scene=>scene.id===state.users[activeuserid].activescene))
     var activetoollist=useSelector((state)=>state.users[activeuserid].scenetoollist[activesceneid].tools)

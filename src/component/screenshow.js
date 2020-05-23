@@ -7,33 +7,67 @@ export default(props)=>{
     const inistate={};
     for (let index in toollist){
         let stkey=(toollist[index].ttype+toollist[index].toolid)
-        inistate[stkey]=[0,0]
+        inistate[stkey]=[0,0,120,120,false]
     }
     inistate.dragging=false
-    
+    inistate.resize=false
+    console.log("ini:",inistate)
+    const [state,setstate]=useState(inistate)
+    useEffect(()=>{
+        console.log("effected")
+        setstate(inistate)},[inistate])
+    console.log("state:",state)
+  
+    const handledown=useCallback(({target})=>{
+        if (target.className==="toolshow"){
+            let tkey=target.id[0].toString()+target.id[2].toString();
+        setstate(prevState=>({   
+            ...prevState,
+            [tkey]:[prevState[tkey][0],prevState[tkey][1],prevState[tkey][2],prevState[tkey][3],true],
+            dragging:true,
+            resize:false
+        }))};
+
     
 
-    const [state,setstate]=useState(inistate)
-  
-    
-   console.log(state.dragging) 
-    const handledown=useCallback(()=>{
+    if (target.className==="resize"){
         setstate(prevState=>({
             ...prevState,
-            dragging:true
-        }));
-    },[]);
+            dragging:false,
+            resize:true
+        }))};
+    }
+    
+    
+    ,[]);
     
     const handlemove=useCallback(
         ({target,clientX,clientY})=>{
             if (state.dragging && target.className==="toolshow"){
                 let tkey=target.id[0].toString()+target.id[2].toString();
+                const[width,height]=[state[tkey][2],state[tkey][3]]
+                if (state[tkey][4]){///&& (clientX-30-(width/3))>=0 && clientY-83-(height/5)>=0){
                     setstate(prevState=>({...prevState,
-                        [tkey]:[Math.round((clientX-24)/10)*10,Math.round((clientY-83)/10)*10]
+                        [tkey]:[Math.round((clientX-30-(width/3))/10)*10,Math.round((clientY-83-(height/5))/10)*10,prevState[tkey][2],prevState[tkey][3],prevState[tkey][4]]
+                    })
+                    )  /// eg. {p1:[34,59,60,60], p2:[54,54,60,60],dragging:true,resize:false,focus:true}                
+                    console.log(state[tkey])
+                }
+                }
+            if (state.resize && target.className==="resize"){
+                let tkey=target.id[0].toString()+target.id[2].toString();
+                const[x,y,width,height]=[state[tkey][0],state[tkey][1],state[tkey][2],state[tkey][3]]
+                    let movex=clientX-x-width+10
+                    let movey=clientY-y-height-53
+
+                    setstate(prevState=>({...prevState,
+                        [tkey]:[prevState[tkey][0],prevState[tkey][1],Math.round((prevState[tkey][2]+movex)/10)*10,Math.round((prevState[tkey][3]+movey)/10)*10,prevState[tkey][4]]
 
 
-                    }))  /// eg. {p1:[34,59], p2:[54,54],dragging:true}                
-            }},
+                    }))
+                    console.log(state[tkey],movex,movey)  /// eg. {p1:[34,59,60,60], p2:[54,54,60,60],dragging:false,resize:true}                
+            }
+        },
         [state]
     );
     
@@ -42,13 +76,21 @@ export default(props)=>{
 
     
 
-    const handleup= useCallback(() => {
+    const handleup= useCallback(({target}) => {
+        if (target.className==="toolshow" ||target.className==="resize" ){
+        let tkey=target.id[0].toString()+target.id[2].toString();
         if (state.dragging) {
             setstate(prevState => ({
               ...prevState,
-              dragging: false
+              [tkey]:[prevState[tkey][0],prevState[tkey][1],prevState[tkey][2],prevState[tkey][3],false],
+              dragging: false,
             }));}
-          },[state.dragging])
+        if (state.resize){setstate(prevState => ({
+            ...prevState,
+            resize: false,
+          }));}
+        }
+          },[state])
    
         useEffect(() => {
             window.addEventListener("mousemove", handlemove);
@@ -59,9 +101,6 @@ export default(props)=>{
               window.removeEventListener("mouseup", handleup);
             };
           }, [handlemove, handleup]);
-
-
-
 
 
 ///<img id={[tool.ttype,tool.toolid]}  className="toolshow" src={process.env.PUBLIC_URL + tool.url } alt="" onMouseDown={handledown} onMouseUp={handleup}  onMouseMove={null}/>
@@ -75,19 +114,19 @@ if (toollist.length){
       key={[tool.ttype,tool.toolid]}
       dragging={state.dragging}
       onMouseDown={handledown}
-      width={0} length={0}
+      width={state[stkey][2]} height={state[stkey][3]}
       x={state[stkey][0]}
       y={state[stkey][1]}
+      zdex={tool.zdex}
     >
     <img id={[tool.ttype,tool.toolid]} className="toolshow" src={process.env.PUBLIC_URL + tool.url } alt=""/>
+    <img id={[tool.ttype,tool.toolid]} className="resize" src={`${process.env.PUBLIC_URL}./resize.png` } style={{ width:"40%", height:"40%" ,left:"60%", top:"60%", opacity:"0"}} alt=""/>
     </Rectangle>
             )
 
         }
     })
 
-
-    console.log(toolshow)
     
 }
 
