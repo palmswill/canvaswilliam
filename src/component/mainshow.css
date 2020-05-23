@@ -129,9 +129,11 @@ button.downbut{
 
 /*main canvas*/
 div.toolshow{
-    position: relative;
-    height:50px;
-    width:50px;
+    position: absolute;
+    height:60px;
+    width:60px;
+    background-color: aqua;
+
 }
 
 img.toolshow{

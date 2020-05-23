@@ -7,9 +7,12 @@ import Scenelist from './scenelist.js'
 
 
 
+
+
 const Mainshow=()=>{
     const [scenelist,toolList]=getlist();
 
+    
 
     return(
     <div >

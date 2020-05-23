@@ -42,6 +42,7 @@ const iniState= {
     
         ],
         /*privately created tools*/
+        tempscene:[],
         ptooldata:[{toolid:1, type:"img",url:"/frame2.png",name:"menu"},
                    {toolid:2,type:"img",url:"/frame1.jpg",name:"top-bar"},
                    {toolid:3,type:"img",url:"/frame3.jpg",name:"bottom-bar"},
@@ -216,6 +217,37 @@ const rootReducer = (state=iniState, {type, payload}) =>{
                         }
                 ]
             };
+
+            case 'MOVE_TOOL':
+                mirror=JSON.parse(JSON.stringify(state.users[actuser].scenetoollist[actscene].tools.filter(tool=>(tool.toolid ===payload[1] &&tool.ttype ===payload[0]))[0]))
+                if (mirror.css.top !== undefined){
+                    mirror.css.top+=payload[3]
+                }
+                if (mirror.css.top === undefined){
+                    mirror.css.top+=payload[3]
+                }
+                
+                if (!mirror.active){
+                mirror.css.opacity=mirror.opacity;
+                }
+                mirror.active=!mirror.active;
+                return {
+                    ...state,
+                    users:[...state.users.filter(user=>(user.id!==actuserid)),
+                        state.users[actuser]={
+                            ...state.users[actuser],
+                            scenetoollist:[
+                                ...state.users[actuser].scenetoollist.filter(scenetool=>scenetool.id!==actsceneid),
+                                {   id:state.users[actuser].activescene,
+                                    tools:quickRever([...state.users[actuser].scenetoollist[actscene].tools.filter(tool=>!(tool.toolid ===payload[1] &&tool.ttype ===payload[0])),
+                                            mirror])
+                                }
+                            ]
+                            }
+                    ]
+                };
+
+
             
         default:
             return {
