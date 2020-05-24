@@ -1,9 +1,29 @@
-import React ,{useState,useCallback,useEffect}from 'react'
+import React ,{useState,useCallback,useEffect,useMemo}from 'react'
 import Rectangle from './itemcreator/itemcreator.js' 
 
 
-export default(props)=>{   
-    let toollist=props.getData;
+export default(props)=>{  
+    let toollist=props.getData; 
+    const inistate = useMemo(() => {
+        console.log("memoed")
+        var inistate = {};
+        for (let index in toollist) {
+            let stkey = (toollist[index].ttype + toollist[index].toolid)
+            inistate[stkey] = [0, 0, 120, 120, false]
+        }
+        inistate.dragging=false
+        inistate.resize=false
+        return inistate
+    }, [toollist])
+    console.log(inistate)
+
+    const[state, setstate]=useState(inistate)
+
+    useEffect(()=>{
+        console.log(1);
+        setstate(inistate);
+    },[inistate]);
+    /*
     const inistate={};
     for (let index in toollist){
         let stkey=(toollist[index].ttype+toollist[index].toolid)
@@ -12,11 +32,17 @@ export default(props)=>{
     inistate.dragging=false
     inistate.resize=false
     console.log("ini:",inistate)
-    const [state,setstate]=useState(inistate)
-    useEffect(()=>{
-        console.log("effected")
-        setstate(inistate)},[inistate])
+    */
+   /*
+    console.log(props.ini)
+    const [prevstate,setprevstate]=useState(null);
+    if (props.ini !== prevstate){
+        console.log("changed")
+        setstate(props.ini)
+        setprevstate(props.ini)
+        }
     console.log("state:",state)
+    */
   
     const handledown=useCallback(({target})=>{
         if (target.className==="toolshow"){
@@ -123,8 +149,8 @@ if (toollist.length){
     <img id={[tool.ttype,tool.toolid]} className="resize" src={`${process.env.PUBLIC_URL}./resize.png` } style={{ width:"40%", height:"40%" ,left:"60%", top:"60%", opacity:"0"}} alt=""/>
     </Rectangle>
             )
-
         }
+        return ""
     })
 
     

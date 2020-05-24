@@ -13,6 +13,15 @@ const Mainshow=()=>{
     const [scenelist,toolList]=getlist();
 
     
+    const inistate={};
+    for (let index in toolList){
+        let stkey=(toolList[index].ttype+toolList[index].toolid)
+        inistate[stkey]=[0,0,120,120,false]
+    }
+    inistate.dragging=false
+    inistate.resize=false
+
+    
 
     return(
     <div >
@@ -25,7 +34,7 @@ const Mainshow=()=>{
     </div>
     <div className="dider" id="midop">
         <div className="dider" id="canvas">
-        <Screenshow getData={toolList}/>
+        <Screenshow getData={toolList} ini={inistate}/>
         </div>
         <div className="dider" id="toolbox">  
         <Toolbar getData={toolList}/>
