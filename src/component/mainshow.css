@@ -42,8 +42,8 @@ body{
     overflow:hidden;
     top:4px;
     left:4px;
-    width:70%;
-    height:585px;
+    width: 512px;
+    height:294px;
     background-color:rgb(240, 234, 234,0.1);
 }
 
@@ -128,25 +128,60 @@ button.downbut{
 
 
 
+
 /*main canvas*/
+
+div#screenshowbarrier{
+    position:absolute;
+    z-index:0;
+    height:100%;
+    width:100%;
+}
+
 div.toolshow{
     resize:both;
     position: absolute;
-    height:60px;
-    width:60px;
     background-color: aqua;
 
 }
 
 img.toolshow{
-    height:100%;
-    width:100%;
+    position: absolute;
 
 }
 
-img.resize{
-    position:absolute;
+div.loader{
+    position: absolute;
+    height:100%;
+    width:100%;
+}
 
+div.cover{
+    position: absolute;
+    height:100%;
+    width:100%;
+}
+
+div.resize.cover{
+    position: relative;
+    height:25%;
+    width:25%;
+    top:75%;
+    left:75%;
+}
+
+
+
+
+video{
+    position: absolute; 
+    right: 0; 
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+    width: 100%; 
+    height: 100%; 
+    z-index: -1;
 }
 
 
@@ -170,5 +205,27 @@ img.resize{
   }
 
 
+/*Room*/
+
+#showpage{
+    display:grid;
+    width: 768px;
+    overflow:hidden;
+    height:100%;
+    grid-template-columns:70px 628px 70px;
+
+
+}
+
+#roomshow{
+    background-color:rgb(240, 234, 234,0.1);
+    overflow:hidden;
+    height:100vh
+}
+
+.side{
+    background-color:black;
+    height:100vh
+}
 
 

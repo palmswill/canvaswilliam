@@ -1,11 +1,13 @@
 import React from 'react'
+import Navbar from './navbar';
 
-const login=()=>{
+const Room=()=>{
     return(
-    <div className="container">
+    <div >
+    <Navbar/>
     <h4>Login</h4>
     
     </div>
     )
 }
-export default login
+export default Room

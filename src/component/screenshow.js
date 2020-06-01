@@ -1,100 +1,98 @@
-import React ,{useState,useCallback,useEffect,useMemo}from 'react'
+import React ,{useCallback,useEffect}from 'react'
 import Rectangle from './itemcreator/itemcreator.js' 
+import Itemloader from './itemcreator/itemloader.js'
+import { useDispatch} from 'react-redux'
+import {adjustTool} from '../reducers/rootReducers'
+
 
 
 export default(props)=>{  
+    const dispatch=useDispatch();
+    let dragging=props.sceneContent.dragging;
+    let resizing=props.sceneContent.resizing;
+    let pinned=props.sceneContent.pinned;
+    let sceneToolList=props.sceneContent.tools;
     let toollist=props.getData; 
-    const inistate = useMemo(() => {
-        console.log("memoed")
-        var inistate = {};
-        for (let index in toollist) {
-            let stkey = (toollist[index].ttype + toollist[index].toolid)
-            inistate[stkey] = [0, 0, 120, 120, false]
-        }
-        inistate.dragging=false
-        inistate.resize=false
-        return inistate
-    }, [toollist])
-    console.log(inistate)
 
-    const[state, setstate]=useState(inistate)
+    console.log(sceneToolList);
 
-    useEffect(()=>{
-        console.log(1);
-        setstate(inistate);
-    },[inistate]);
-    /*
-    const inistate={};
-    for (let index in toollist){
-        let stkey=(toollist[index].ttype+toollist[index].toolid)
-        inistate[stkey]=[0,0,120,120,false]
-    }
-    inistate.dragging=false
-    inistate.resize=false
-    console.log("ini:",inistate)
-    */
-   /*
-    console.log(props.ini)
-    const [prevstate,setprevstate]=useState(null);
-    if (props.ini !== prevstate){
-        console.log("changed")
-        setstate(props.ini)
-        setprevstate(props.ini)
-        }
-    console.log("state:",state)
-    */
-  
+
+
+    
+
+
     const handledown=useCallback(({target})=>{
-        if (target.className==="toolshow"){
-            let tkey=target.id[0].toString()+target.id[2].toString();
-        setstate(prevState=>({   
-            ...prevState,
-            [tkey]:[prevState[tkey][0],prevState[tkey][1],prevState[tkey][2],prevState[tkey][3],true],
-            dragging:true,
-            resize:false
-        }))};
+        let focus={};
+        console.log("indexscreenshow:",target.id[4])
+        if (target.classList.contains("toolshow")){
+            focus=sceneToolList[target.id[4]];
+            focus.focus=true;
+            console.log(sceneToolList[target.id[4]])
+            if (!focus.pinned){
+            dispatch(adjustTool(target.id[0],target.id[2],focus,false,true,false,target.id[4]))
+            }
+           
+    };
+    if (target.classList.contains("resize")){
+        focus=sceneToolList[target.id[4]];
+        focus.focus=true;
+        console.log(sceneToolList[target.id[4]])
+        if (!focus.pinned) {
+            dispatch(adjustTool(target.id[0], target.id[2], focus, true, false, false, target.id[4]))
+        }
 
-    
 
-    if (target.className==="resize"){
-        setstate(prevState=>({
-            ...prevState,
-            dragging:false,
-            resize:true
-        }))};
+    };
     }
     
     
-    ,[]);
+    ,[sceneToolList,dispatch]);
+
+
+    const handleup= useCallback(({target}) => {
+        if (target.classList.contains("toolshow") ||target.classList.contains("resize") ){
+            let focus={};
+            focus=sceneToolList[target.id[4]];
+            focus.focus=true;
+        if (dragging || resizing){
+            dispatch(adjustTool(target.id[0],target.id[2],focus,false,false,false,target.id[4]))
+        }
+    }
+        
+          },[dispatch,dragging,resizing,sceneToolList])
+
     
     const handlemove=useCallback(
         ({target,clientX,clientY})=>{
-            if (state.dragging && target.className==="toolshow"){
-                let tkey=target.id[0].toString()+target.id[2].toString();
-                const[width,height]=[state[tkey][2],state[tkey][3]]
-                if (state[tkey][4]){///&& (clientX-30-(width/3))>=0 && clientY-83-(height/5)>=0){
-                    setstate(prevState=>({...prevState,
-                        [tkey]:[Math.round((clientX-30-(width/3))/10)*10,Math.round((clientY-83-(height/5))/10)*10,prevState[tkey][2],prevState[tkey][3],prevState[tkey][4]]
-                    })
-                    )  /// eg. {p1:[34,59,60,60], p2:[54,54,60,60],dragging:true,resize:false,focus:true}                
-                    console.log(state[tkey])
-                }
-                }
-            if (state.resize && target.className==="resize"){
-                let tkey=target.id[0].toString()+target.id[2].toString();
-                const[x,y,width,height]=[state[tkey][0],state[tkey][1],state[tkey][2],state[tkey][3]]
-                    let movex=clientX-x-width+10
-                    let movey=clientY-y-height-53
-
-                    setstate(prevState=>({...prevState,
-                        [tkey]:[prevState[tkey][0],prevState[tkey][1],Math.round((prevState[tkey][2]+movex)/10)*10,Math.round((prevState[tkey][3]+movey)/10)*10,prevState[tkey][4]]
-
-
-                    }))
-                    console.log(state[tkey],movex,movey)  /// eg. {p1:[34,59,60,60], p2:[54,54,60,60],dragging:false,resize:true}                
+            let focus={};
+            let [x,y,width,height]=[0,0,0,0]
+            if (target.classList.contains("toolshow")||target.classList.contains("resize")){
+            focus=sceneToolList[target.id[4]];
+            [x,y,width,height]=[focus.coords.x,focus.coords.y,focus.coords.width,focus.coords.height]
             }
-        },
-        [state]
+            /*
+            for (let item in sceneToolList){
+                if (sceneToolList[item].ttype===target.id[0] && sceneToolList[item].toolid.toString()===target.id[2].toString()){
+                    focus=sceneToolList[item];
+                    [x,y,width,height]=[focus.coords.x,focus.coords.y,focus.coords.width,focus.coords.height]
+                }
+            }
+            */
+            if (dragging && target.classList.contains("toolshow")&&focus.focus){
+                focus.coords={x:Math.round((clientX-30-(width/3))/10)*10,y:Math.round((clientY-83-(height/3))/10)*10,width:width,height:height}
+                dispatch(adjustTool(target.id[0],target.id[2],focus,false,true,false,target.id[4]))  
+            }  
+            
+            if (resizing && target.classList.contains("resize")){
+                focus.coords={x:x,y:y,width:Math.round((clientX-x)/10)*10,height:Math.round((clientY-y-53)/10)*10}
+                dispatch(adjustTool(target.id[0],target.id[2],focus,true,false,false,target.id[4]))  
+            }
+            
+          
+        }
+        
+        ,
+        [dragging,sceneToolList,resizing,dispatch]
     );
     
     
@@ -102,21 +100,7 @@ export default(props)=>{
 
     
 
-    const handleup= useCallback(({target}) => {
-        if (target.className==="toolshow" ||target.className==="resize" ){
-        let tkey=target.id[0].toString()+target.id[2].toString();
-        if (state.dragging) {
-            setstate(prevState => ({
-              ...prevState,
-              [tkey]:[prevState[tkey][0],prevState[tkey][1],prevState[tkey][2],prevState[tkey][3],false],
-              dragging: false,
-            }));}
-        if (state.resize){setstate(prevState => ({
-            ...prevState,
-            resize: false,
-          }));}
-        }
-          },[state])
+    
    
         useEffect(() => {
             window.addEventListener("mousemove", handlemove);
@@ -132,26 +116,45 @@ export default(props)=>{
 ///<img id={[tool.ttype,tool.toolid]}  className="toolshow" src={process.env.PUBLIC_URL + tool.url } alt="" onMouseDown={handledown} onMouseUp={handleup}  onMouseMove={null}/>
 let toolshow="";
 if (toollist.length){
-    toolshow=toollist.map(tool=>{
-        if (tool.active){
-            let stkey=(tool.ttype.toString()+tool.toolid.toString())
+    toolshow=toollist.map((tool,index)=>{
+        let media=null;
+        let zdex=0;
+        let opacity=0;
+        if(typeof (tool.media) !=="undefined"){
+            media=tool.media
+            console.log(tool.media)
+        }
+        if (!tool.active){
+            zdex=-1
+            opacity=0
+        }
+        else{
+            zdex=tool.zdex
+            opacity=tool.opacity
+        }
+            
             return (
     <Rectangle 
-      key={[tool.ttype,tool.toolid]}
-      dragging={state.dragging}
+      key={[tool.ttype,tool.toolid,index]}
+      dragging={dragging}
+      resizing={resizing}
       onMouseDown={handledown}
-      width={state[stkey][2]} height={state[stkey][3]}
-      x={state[stkey][0]}
-      y={state[stkey][1]}
-      zdex={tool.zdex}
+      width={tool.coords.width} height={tool.coords.height}
+      x={tool.coords.x}
+      y={tool.coords.y}
+      zdex={zdex}
+      opacity={opacity}
     >
-    <img id={[tool.ttype,tool.toolid]} className="toolshow" src={process.env.PUBLIC_URL + tool.url } alt=""/>
-    <img id={[tool.ttype,tool.toolid]} className="resize" src={`${process.env.PUBLIC_URL}./resize.png` } style={{ width:"40%", height:"40%" ,left:"60%", top:"60%", opacity:"0"}} alt=""/>
+    <Itemloader
+        id={[tool.ttype,tool.toolid]}
+        tool={tool}
+        media={media}
+        index={index}
+    />
     </Rectangle>
             )
         }
-        return ""
-    })
+    )
 
     
 }
@@ -160,6 +163,7 @@ if (toollist.length){
     
 return (
     <div>
+    <div id="screenshowbarrier"></div>
     {toolshow}
     </div>
 )        

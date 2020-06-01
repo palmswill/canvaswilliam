@@ -13,33 +13,34 @@ export default(props)=>{
     })
 
     const handlechange=(e)=>{
-        dispatch(hideShowTool(e.target.id[0],Number(e.target.id[2])))      
+        console.log(e.target.id[4])
+        dispatch(hideShowTool(e.target.id[0],Number(e.target.id[2]),e.target.id[4]))      
     }
 
     const handleCross=(e)=>{
-        
-        dispatch(deleteTool(e.target.id[0],Number(e.target.id[2])));
+        console.log(e.target.id[4])
+        dispatch(deleteTool(e.target.id[0],Number(e.target.id[2]),e.target.id[4]));
     }
 
     const handleUp=(e)=>{
-        
-        dispatch(toolUp(e.target.id[0],Number(e.target.id[2])));
+        console.log(e.target.id[4])
+        dispatch(toolUp(e.target.id[0],Number(e.target.id[2]),e.target.id[4]));
     }
 
     const handleDown=(e)=>{
-        
-        dispatch(toolDown(e.target.id[0],Number(e.target.id[2])));
+        console.log(e.target.id[4])
+        dispatch(toolDown(e.target.id[0],Number(e.target.id[2]),e.target.id[4]));
     }
    if (toolstate.tools.length){
-    toollist=toolstate.tools.map(tool=>{
+    toollist=toolstate.tools.map((tool,index)=>{
         return(
-            <div className="tool" key={tool.toolid}>    
+            <div className="tool" key={[tool.toolid,index]}>    
                 <label>
-                    <input type="checkbox" id={[tool.ttype,tool.toolid]}  checked={tool.active} onChange={handlechange}/>
+                    <input type="checkbox" id={[tool.ttype,tool.toolid,index]}  checked={tool.active} onChange={handlechange}/>
                     <span  style={{fontSize:"10px"}}>{tool.name}</span>
-                    <button className="toolbut circle" type="button" id={[tool.ttype,tool.toolid]} onClick={handleCross}>X</button>
-                    <button className="upbut " type="button" id={[tool.ttype,tool.toolid]} onClick={handleUp}></button>
-                    <button className="downbut " type="button" id={[tool.ttype,tool.toolid]} onClick={handleDown}></button>
+                    <button className="toolbut circle" type="button" id={[tool.ttype,tool.toolid,index]} onClick={handleCross}>X</button>
+                    <button className="upbut " type="button" id={[tool.ttype,tool.toolid,index]} onClick={handleUp}></button>
+                    <button className="downbut " type="button" id={[tool.ttype,tool.toolid,index]} onClick={handleDown}></button>
                 </label>          
             </div>
         )

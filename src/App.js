@@ -1,13 +1,17 @@
 import React from 'react';
-import Navbar from './component/navbar';
 import {BrowserRouter, Route} from 'react-router-dom';
 import Mainshow from './component/mainshow';
 import Login from './component/Login';
+import Room from './component/Room';
+
+
 
 import {Provider} from 'react-redux'; 
 import {store}from './reducers/rootReducers.js';
+import {initStateWithPrevTab} from 'redux-state-sync'
 
 
+initStateWithPrevTab(store)
 
 
 function App() {
@@ -15,9 +19,9 @@ function App() {
     <Provider store={store}>
     <BrowserRouter>
       <div className="App">
-        <Navbar />
         <Route exact path='/' component={Mainshow}/>
         <Route path='/login' component={Login}/>
+        <Route path='/room'  component={Room}/>
       </div>
     </BrowserRouter>
     </Provider>

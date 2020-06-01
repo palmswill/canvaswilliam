@@ -5,6 +5,7 @@ const Rectangle = styled.div.attrs((props) => ({
     width:`${props.width}px`,
     height:`${props.height}px`,
     "zIndex":`${props.zdex}`,
+    opacity:`${props.opacity}`,
     transform: `translate(${props.x}px, ${props.y}px)`,
   }
 }))`
@@ -13,9 +14,10 @@ const Rectangle = styled.div.attrs((props) => ({
   resize:both;
   
   
-  ${({ dragging }) =>
-    dragging &&
+  ${({ dragging,resizing}) =>
+    (dragging||resizing) &&
     `
+    border-style:dashed;
     opacity: 0.8;
     cursor: grabbing;
   `}
